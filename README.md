@@ -1,6 +1,6 @@
-# Mars Rover Simulator
+# Rover Navigation Simulator
 
-A modular, production-quality Python backend simulator for controlling robotic rovers on a Mars plateau.
+A Python based simulator for controlling robotic rovers on a rectangular plateau.
 
 ## Problem Description
 A squad of robotic rovers are to be landed on a rectangular plateau on Mars. A rover's state consists of its (x, y) coordinates and its heading (N, E, S, W). To control the rovers, ISRO sends strings of standard commands:
@@ -47,4 +47,4 @@ To verify correctness and prevent regression, run the `unittest` suite inside th
 ```bash
 python -m unittest tests/test_rover.py
 ```
-This tests bounds verification, invalid directions/commands handling, and standard sequence correctness.
+
