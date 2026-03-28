@@ -1,4 +1,5 @@
 import os
+import re
 from plateau import Plateau
 from rover import Rover
 
@@ -35,13 +36,14 @@ def main():
                 print(f"Warning: Expected commands for rover at line {i+1}, but found none.")
                 break
                 
-            pos_args = lines[i].split()
-            if len(pos_args) != 3:
-                raise ValueError(f"Invalid initial position format on line {i+1}.")
+            # Use regex to handle both "1 2 N" and "1 2N" formats gracefully
+            match = re.match(r"^(\d+)\s+(\d+)\s*([A-Za-z])$", lines[i])
+            if not match:
+                raise ValueError(f"Invalid initial position format on line {i+1}: '{lines[i]}'")
                 
-            x = int(pos_args[0])
-            y = int(pos_args[1])
-            direction = pos_args[2].upper()
+            x = int(match.group(1))
+            y = int(match.group(2))
+            direction = match.group(3).upper()
             commands = lines[i+1].upper()
             
             if direction not in Rover.DIRECTIONS:
@@ -64,4 +66,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

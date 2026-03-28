@@ -56,4 +56,4 @@ class Rover:
                 
     def get_position(self) -> str:
         """Returns the current position and direction of the rover."""
-        return f"{self.x} {self.y} {self.direction}"
+        return f"{self.x} {self.y}{self.direction}"
