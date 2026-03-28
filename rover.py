@@ -3,9 +3,22 @@ from plateau import Plateau
 class Rover:
     """Represents a robotic rover on the Mars plateau."""
     
-    DIRECTIONS = ['N', 'E', 'S', 'W']
+    DIRECTIONS = {'N', 'E', 'S', 'W'}
+    
+    LEFT_TURNS = {'N': 'W', 'W': 'S', 'S': 'E', 'E': 'N'}
+    RIGHT_TURNS = {'N': 'E', 'E': 'S', 'S': 'W', 'W': 'N'}
+    
+    MOVES = {
+        'N': (0, 1),
+        'E': (1, 0),
+        'S': (0, -1),
+        'W': (-1, 0)
+    }
     
     def __init__(self, x: int, y: int, direction: str, plateau: Plateau):
+        if direction not in self.DIRECTIONS:
+            raise ValueError(f"Invalid direction: '{direction}'. Must be one of {self.DIRECTIONS}")
+            
         self.x = x
         self.y = y
         self.direction = direction
@@ -13,31 +26,23 @@ class Rover:
         
     def turn_left(self):
         """Spins the rover 90 degrees left."""
-        idx = self.DIRECTIONS.index(self.direction)
-        self.direction = self.DIRECTIONS[(idx - 1) % 4]
+        self.direction = self.LEFT_TURNS[self.direction]
         
     def turn_right(self):
         """Spins the rover 90 degrees right."""
-        idx = self.DIRECTIONS.index(self.direction)
-        self.direction = self.DIRECTIONS[(idx + 1) % 4]
+        self.direction = self.RIGHT_TURNS[self.direction]
         
     def move(self):
         """Moves the rover forward one grid point in current direction."""
-        new_x, new_y = self.x, self.y
-        if self.direction == 'N':
-            new_y += 1
-        elif self.direction == 'E':
-            new_x += 1
-        elif self.direction == 'S':
-            new_y -= 1
-        elif self.direction == 'W':
-            new_x -= 1
+        dx, dy = self.MOVES[self.direction]
+        new_x = self.x + dx
+        new_y = self.y + dy
             
         if self.plateau.is_valid(new_x, new_y):
             self.x = new_x
             self.y = new_y
         else:
-            # Prevent movement outside the plateau
+            # Reached boundary of the plateau, ignoring movement command.
             pass
             
     def execute(self, commands: str):
