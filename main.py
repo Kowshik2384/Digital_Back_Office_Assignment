@@ -20,7 +20,6 @@ def main():
             print("Error: Input file is empty.")
             return
 
-        # Parse plateau limits
         plateau_args = lines[0].split()
         if len(plateau_args) != 2:
             raise ValueError("Invalid plateau dimensions format.")
@@ -30,12 +29,12 @@ def main():
         plateau = Plateau(max_x, max_y)
 
         results = []
-        # Parse rovers sequentially
+      
         for i in range(1, len(lines), 2):
             if i + 1 >= len(lines):
                 raise ValueError(f"Expected commands for rover at line {i+1}, but found EOF.")
                 
-            # Use regex to handle spatial permutations of format gracefully
+           
             match = re.match(r"^(\d+)\s+(\d+)\s*([A-Za-z])$", lines[i])
             if not match:
                 raise ValueError(f"Invalid initial position format on line {i+1}: '{lines[i]}'")
@@ -56,7 +55,6 @@ def main():
             rover.execute(commands)
             results.append(rover.get_position())
 
-        # Write the output to output.txt and print to console
         with open(OUTPUT_FILE, 'w') as f:
             for result in results:
                 f.write(result + '\n')
